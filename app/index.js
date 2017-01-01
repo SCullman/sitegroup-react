@@ -81,25 +81,25 @@ class Sites extends React.Component{
             <select id="Portals" multiple="multiple"  onChange={this.currentSiteSelected}>
             {
               this.props.currentSites.map((site)=>
-              <option value={site} key={site.PortalId.toString()}>{site.PortalName}</option>)
+              <option value={site.PortalId} key={site.PortalId.toString()}>{site.PortalName}</option>)
             }
             </select>
-            <button >Remove</button>
+            <button disabled={! this.state.currentSite}>Remove</button>
         </div>
         <div>
             <select onChange={this.availableSiteSelected}>
+              <option value="">Choose a site</option>
             {
                 this.props.availableSites.map((site)=>
-                <option value={site} key={site.PortalId.toString()} >{site.PortalName}</option>)
+                <option value={site.PortalId} key={site.PortalId.toString()} >{site.PortalName}</option>)
             }
             </select>
-            <button >Add</button>
+            <button disabled={! this.state.availableSite}>Add</button>
         </div>
       </div>
     );
   }
 }
-
 
 class SiteGroupEditor extends React.Component{
   constructor(props) {
