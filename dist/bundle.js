@@ -21830,17 +21830,12 @@ var Sites = function (_React$Component5) {
     var _this5 = _possibleConstructorReturn(this, (Sites.__proto__ || Object.getPrototypeOf(Sites)).call(this, props));
 
     _this5.state = { currentSite: null, availableSite: null };
-    _this5.currentSiteSelected = _this5.currentSiteSelected.bind(_this5);
+
     _this5.availableSiteSelected = _this5.availableSiteSelected.bind(_this5);
     return _this5;
   }
 
   _createClass(Sites, [{
-    key: 'currentSiteSelected',
-    value: function currentSiteSelected(e) {
-      this.setState({ currentSite: e.target.value });
-    }
-  }, {
     key: 'availableSiteSelected',
     value: function availableSiteSelected(e) {
       this.setState({ availableSite: e.target.value });
@@ -21848,6 +21843,8 @@ var Sites = function (_React$Component5) {
   }, {
     key: 'render',
     value: function render() {
+      var _this6 = this;
+
       return _react2.default.createElement(
         'div',
         null,
@@ -21861,18 +21858,20 @@ var Sites = function (_React$Component5) {
           ),
           _react2.default.createElement(
             'select',
-            { id: 'Portals', multiple: 'multiple', onChange: this.currentSiteSelected },
+            { id: 'Portals', multiple: 'multiple', onChange: function onChange() {
+                return _this6.setState({ currentSite: e.target.value });
+              } },
             this.props.currentSites.map(function (site) {
               return _react2.default.createElement(
                 'option',
-                { value: site, key: site.PortalId.toString() },
+                { value: site.PortalId, key: site.PortalId.toString() },
                 site.PortalName
               );
             })
           ),
           _react2.default.createElement(
             'button',
-            null,
+            { disabled: !this.state.currentSite },
             'Remove'
           )
         ),
@@ -21882,17 +21881,22 @@ var Sites = function (_React$Component5) {
           _react2.default.createElement(
             'select',
             { onChange: this.availableSiteSelected },
+            _react2.default.createElement(
+              'option',
+              { value: '' },
+              'Choose a site'
+            ),
             this.props.availableSites.map(function (site) {
               return _react2.default.createElement(
                 'option',
-                { value: site, key: site.PortalId.toString() },
+                { value: site.PortalId, key: site.PortalId.toString() },
                 site.PortalName
               );
             })
           ),
           _react2.default.createElement(
             'button',
-            null,
+            { disabled: !this.state.availableSite },
             'Add'
           )
         )
@@ -21909,15 +21913,15 @@ var SiteGroupEditor = function (_React$Component6) {
   function SiteGroupEditor(props) {
     _classCallCheck(this, SiteGroupEditor);
 
-    var _this6 = _possibleConstructorReturn(this, (SiteGroupEditor.__proto__ || Object.getPrototypeOf(SiteGroupEditor)).call(this, props));
+    var _this7 = _possibleConstructorReturn(this, (SiteGroupEditor.__proto__ || Object.getPrototypeOf(SiteGroupEditor)).call(this, props));
 
-    _this6.state = {
-      PortalGroupName: _this6.props.group.PortalGroupName,
-      AuthenticationDomain: _this6.props.group.AuthenticationDomain
+    _this7.state = {
+      PortalGroupName: _this7.props.group.PortalGroupName,
+      AuthenticationDomain: _this7.props.group.AuthenticationDomain
     };
-    _this6.groupNameChanged = _this6.groupNameChanged.bind(_this6);
-    _this6.domainChanged = _this6.domainChanged.bind(_this6);
-    return _this6;
+    _this7.groupNameChanged = _this7.groupNameChanged.bind(_this7);
+    _this7.domainChanged = _this7.domainChanged.bind(_this7);
+    return _this7;
   }
 
   _createClass(SiteGroupEditor, [{
