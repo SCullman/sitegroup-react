@@ -1,20 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import SiteGroups from './SiteGroups';
-import SiteGroupEditor from './SiteGroupEditor'
-
-class SiteGroupApp extends React.Component {
-  render(){
-    return( 
-      <div>
-        <SiteGroups groups={this.props.groups} sites={this.props.sites}/>
-        <SiteGroupEditor group={this.props.groups[0]} sites={this.props.sites}/>
-      </div>
-    );
-  }
-}
-
+import SiteGroupApp from './SiteGroupApp';
 
 const  PortalGroups = [
   {
@@ -58,6 +45,7 @@ const AvailablePortals = [{
       PortalId:9
     }];
  
+
 ReactDOM.render(
   <SiteGroupApp 
     groups={PortalGroups}

@@ -1,50 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class Sites extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentSite: null,
-      availableSite: null
-    }
-  }
-
-  render() {
-    return (
-      <div>
-        <div>
-          <label>Sites</label>
-          <select
-            multiple="multiple"
-            onChange={(e) => this.setState({currentSite: e.target.value})}>
-            {this.props.currentSites.map((site) => 
-              <option
-                value={site.PortalId}
-                key={site.PortalId.toString()}>{site.PortalName}</option>)
-}
-          </select>
-          <button
-            disabled={!this.state.currentSite}
-            onClick={() => this.props.onRemoveSite(this.state.currentSite)}>Remove</button>
-        </div>
-        <div>
-          <select onChange={(e) => this.setState({availableSite: e.target.value})}>
-            <option value="">Choose a site</option>
-            {this.props.availableSites.map((site) => 
-              <option
-                value={site.PortalId}
-                key={site.PortalId.toString()}>{site.PortalName}</option>)
-}
-          </select>
-          <button
-            disabled={!this.state.availableSite}
-            onClick={() => this.props.onAddSite(this.state.availableSite)}>Add</button>
-        </div>
-      </div>
-    );
-  }
-}
+import Sites from './Sites';
 
 export default class SiteGroupEditor extends React.Component {
   constructor(props) {
@@ -56,21 +13,36 @@ export default class SiteGroupEditor extends React.Component {
       AvailableSites: this.props.sites
     };
   }
+  
+  sortPortals(a,b) {return a.PortalName < b.PortalName ? -1 : 1} 
 
   addSite(id) {
     const newSite = this.state.AvailableSites.find((site) => site.PortalId == id);
     this.setState({
-      AvailableSites : this.state.AvailableSites.filter((site) => site.PortalId!=id),
-      Portals: [...this.state.Portals, newSite]
+      AvailableSites: this.state.AvailableSites.filter((site) => site.PortalId!=id).sort(this.sortPortals),
+      Portals: [...this.state.Portals, newSite].sort(this.sortPortals)
     })
   }
 
   removeSite(id) {
     const oldSite = this.state.Portals.find((site) => site.PortalId == id);
     this.setState({
-      Portals : this.state.Portals.filter((site) => site.PortalId!=id),
-      AvailableSites: [...this.state.AvailableSites, oldSite]
+      AvailableSites: [...this.state.AvailableSites, oldSite].sort(this.sortPortals),
+      Portals: this.state.Portals.filter((site) => site.PortalId!=id).sort(this.sortPortals)
     })
+  }
+
+  result(){
+    return{
+      PortalGroup :{
+        PortalGroupId: this.props.group.PortalGroupId, 
+        AuthenticationDomain: this.state.AuthenticationDomain,
+        PortalGroupName: this.state.PortalGroupName,
+        MasterPortal: this.props.group.MasterPortal,
+        Portals: this.state.Portals
+      },
+      AvailableSites: this.state.AvailableSites
+    }
   }
 
   render() {
@@ -109,8 +81,8 @@ export default class SiteGroupEditor extends React.Component {
           onAddSite={(id) => {this.addSite(id)}}
           onRemoveSite={(id) => {this.removeSite(id)}}/>
         <div >
-          <button >Save</button>
-          <button >Cancel</button>
+          <button onClick={() => this.props.onSave(this.result(), this.state.AvailableSites)}>Save</button>
+          <button onClick={() => this.props.onCancelEdit()}>Cancel</button>
         </div>
       </div>
     )
