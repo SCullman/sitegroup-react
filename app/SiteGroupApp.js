@@ -23,7 +23,7 @@ export default class SiteGroupApp extends React.Component {
           PortalGroupName: site.PortalName,
           AuthenticationDomain:'',
           Portals:[]},
-      availableSites: this.props.sites.filter((site) => site.PortalId!=id),
+      availableSites: this.state.availableSites.filter((site) => site.PortalId!=id),
       }
     ); 
   }
@@ -56,8 +56,9 @@ export default class SiteGroupApp extends React.Component {
     this.setState({ 
         availableSites : this.state.availableSites
                             .concat(group.Portals)
+                            .concat([group.MasterPortal])
                             .sort((a,b) => a.PortalName < b.PortalName ? -1 : 1),
-        groups: this.g.filter((g) => g.PortalGroupId != group.PortalGroupId ) });    
+        groups: this.state.groups.filter((g) => g.PortalGroupId != group.PortalGroupId ) });    
   }
 
   render(){
