@@ -31,24 +31,17 @@ export default class SiteGroupApp extends React.Component {
       const group = r.PortalGroup;
       const availableSites= r.AvailableSites;
       const isNewGroup = group.PortalGroupId == -1;
-      if(isNewGroup){
-           this.setState({ 
+      const groups = (isNewGroup 
+                        ? this.state.groups
+                        : this.state.groups.filter((g) => g.PortalGroupId != group.PortalGroupId))
+                .concat([group])
+                .sort((a,b) => a.PortalGroupName < b.PortalGroupName ? -1 : 1);
+      
+      this.setState({ 
               availableSites,
               currentGroup:null,
-              groups: this.state.groups
-                .concat([group])
-                .sort((a,b) => a.PortalGroupName < b.PortalGroupName ? -1 : 1)
-            });    
-      } else {
-          this.setState({ 
-              availableSites,
-              currentGroup:null,
-              groups: this.state.groups
-                .filter((g) => g.PortalGroupId != group.PortalGroupId)
-                .concat([group])
-                .sort((a,b) => a.PortalGroupName < b.PortalGroupName ? -1 : 1)
+              groups
             });
-      }
   }
 
   deleteGroup(group){
