@@ -22,8 +22,7 @@ export default class SiteGroupApp extends React.Component {
           MasterPortal: site,
           PortalGroupName: site.PortalName,
           AuthenticationDomain:'',
-          Portals:[]},
-      availableSites: this.state.availableSites.filter((site) => site.PortalId!=id),
+          Portals:[]}
       }
     ); 
   }
@@ -66,8 +65,8 @@ export default class SiteGroupApp extends React.Component {
       this.state.currentGroup ?
       (  <SiteGroupEditor 
             group={this.state.currentGroup} 
-            sites={this.state.availableSites}
-            onCancelEdit={() => this.setState({currentGroup:null, availableSites: this.props.sites})}
+            sites={this.state.availableSites.filter((site) => site.PortalId!=this.state.currentGroup.MasterPortal.PortalId)}
+            onCancelEdit={() => this.setState({currentGroup:null})}
             onSave={(r) => this.saveGroup(r)}/>
       ):(
          <SiteGroups 
